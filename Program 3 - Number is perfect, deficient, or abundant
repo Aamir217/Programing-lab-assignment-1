@@ -1,0 +1,32 @@
+//Program to check if a number is perfect, deficient, or abundant
+
+CODE ->
+Part (a)
+#include <stdio.h>
+
+int sum_of_divisors(int num) {
+    int sum = 1; // Start with 1 as it's always a divisor
+    for (int i = 2; i <= num / 2; i++) {
+        if (num % i == 0)
+            sum += i;
+    }
+    return sum;
+}
+
+void classify_number(int num) {
+    int sum = sum_of_divisors(num);
+    if (sum == num)
+        printf("%d is a perfect number.\n", num);
+    else if (sum < num)
+        printf("%d is a deficient number.\n", num);
+    else
+        printf("%d is an abundant number.\n", num);
+}
+
+int main() {
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+    classify_number(num);
+    return 0;
+}
