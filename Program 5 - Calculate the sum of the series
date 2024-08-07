@@ -1,0 +1,38 @@
+// Program to calculate the sum of the series
+
+CODE ->
+#include <stdio.h>
+#include <math.h>
+
+double calculate_sum(double x, int n) {
+    double sum = 0;
+    int sign = 1;
+    
+    for (int i = 1; i <= n; i++) {
+        sum += sign * pow(x, i) / i;
+        sign *= -1;
+    }
+    
+    return sum;
+}
+
+int main() {
+    double x;
+    int n;
+    
+    printf("Enter x (-1 < x <= 1): ");
+    scanf("%lf", &x);
+    
+    printf("Enter n (n > 100): ");
+    scanf("%d", &n);
+    
+    if (x <= -1 || x > 1 || n <= 100) {
+        printf("Invalid input. Please ensure -1 < x <= 1 and n > 100.\n");
+        return 1;
+    }
+    
+    double result = calculate_sum(x, n);
+    printf("Sum of the series: %f\n", result);
+    
+    return 0;
+}
