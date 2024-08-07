@@ -1,0 +1,28 @@
+// Program to check if two lines are parallel, perpendicular, or intersecting
+
+CODE ->
+#include <stdio.h>
+#include <math.h>
+
+void line_relationship(double m1, double m2) {
+    if (m1 == m2)
+        printf("The lines are parallel.\n");
+    else if (m1 * m2 == -1)
+        printf("The lines are perpendicular.\n");
+    else
+        printf("The lines are intersecting with an angle θ ≠ 90°.\n");
+}
+
+int main() {
+    double m1, c1, m2, c2;
+    
+    printf("Enter m1 and c1 for the first line (y = m1*x + c1): ");
+    scanf("%lf %lf", &m1, &c1);
+    
+    printf("Enter m2 and c2 for the second line (y = m2*x + c2): ");
+    scanf("%lf %lf", &m2, &c2);
+    
+    line_relationship(m1, m2);
+    
+    return 0;
+}
