@@ -1,0 +1,116 @@
+// Program to perform set operations
+
+CODE ->
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 1000
+
+void print_set(int set[], int size) {
+    printf("{ ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", set[i]);
+    }
+    printf("}\n");
+}
+
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int union_sets(int A[], int n, int B[], int m, int result[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < n && j < m) {
+        if (A[i] < B[j]) result[k++] = A[i++];
+        else if (B[j] < A[i]) result[k++] = B[j++];
+        else {
+            result[k++] = A[i++];
+            j++;
+        }
+    }
+    while (i < n) result[k++] = A[i++];
+    while (j < m) result[k++] = B[j++];
+    return k;
+}
+
+int intersection_sets(int A[], int n, int B[], int m, int result[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < n && j < m) {
+        if (A[i] < B[j]) i++;
+        else if (B[j] < A[i]) j++;
+        else {
+            result[k++] = A[i++];
+            j++;
+        }
+    }
+    return k;
+}
+
+int difference_sets(int A[], int n, int B[], int m, int result[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < n && j < m) {
+        if (A[i] < B[j]) result[k++] = A[i++];
+        else if (B[j] < A[i]) j++;
+        else {
+            i++;
+            j++;
+        }
+    }
+    while (i < n) result[k++] = A[i++];
+    return k;
+}
+
+int symmetric_difference_sets(int A[], int n, int B[], int m, int result[]) {
+    int temp[MAX_SIZE];
+    int union_size = union_sets(A, n, B, m, temp);
+    int intersection[MAX_SIZE];
+    int intersection_size = intersection_sets(A, n, B, m, intersection);
+    return difference_sets(temp, union_size, intersection, intersection_size, result);
+}
+
+int main() {
+    int A[MAX_SIZE], B[MAX_SIZE], n, m;
+    
+    printf("Enter the number of elements in set A: ");
+    scanf("%d", &n);
+    printf("Enter %d elements for set A: ", n);
+    for (int i = 0; i < n; i++) scanf("%d", &A[i]);
+    
+    printf("Enter the number of elements in set B: ");
+    scanf("%d", &m);
+    printf("Enter %d elements for set B: ", m);
+    for (int i = 0; i < m; i++) scanf("%d", &B[i]);
+    
+    qsort(A, n, sizeof(int), compare);
+    qsort(B, m, sizeof(int), compare);
+    
+    int result[MAX_SIZE];
+    int size;
+    
+    printf("Set A: ");
+    print_set(A, n);
+    printf("Set B: ");
+    print_set(B, m);
+    
+    size = union_sets(A, n, B, m, result);
+    printf("A ∪ B: ");
+    print_set(result, size);
+    
+    size = intersection_sets(A, n, B, m, result);
+    printf("A ∩ B: ");
+    print_set(result, size);
+    
+    size = difference_sets(A, n, B, m, result);
+    printf("A \\ B: ");
+    print_set(result, size);
+    
+    size = difference_sets(B, m, A, n, result);
+    printf("B \\ A: ");
+    print_set(result, size);
+    
+    size = symmetric_difference_sets(A, n, B, m, result);
+    printf("A Δ B: ");
+    print_set(result, size);
+    
+    return 0;
+}
