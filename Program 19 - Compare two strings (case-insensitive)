@@ -1,0 +1,37 @@
+// Program to compare two strings (case-insensitive)
+
+CODE ->
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LENGTH 100
+
+int compare_strings(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        if (tolower(*s1) != tolower(*s2)) {
+            return 0;
+        }
+        s1++;
+        s2++;
+    }
+    return (*s1 == '\0' && *s2 == '\0');
+}
+
+int main() {
+    char str1[MAX_LENGTH], str2[MAX_LENGTH];
+    
+    printf("Enter the first string: ");
+    scanf("%[^\n]s",str1);
+    
+    printf("Enter the second string: ");
+    scanf("%[^\n]s",str2);
+    
+    if (compare_strings(str1, str2)) {
+        printf("same\n");
+    } else {
+        printf("not same\n");
+    }
+    
+    return 0;
+}
