@@ -1,0 +1,57 @@
+// Program to find the frequency of a keyword in a given text file:
+
+Code ->
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LINE 1000
+
+int count_keyword(FILE *file, const char *keyword) {
+    char line[MAX_LINE];
+    int count = 0;
+    char *word;
+    
+    while (fgets(line, sizeof(line), file)) {
+        for (int i = 0; line[i]; i++) {
+            line[i] = tolower(line[i]);
+        }
+        
+        word = strtok(line, " \t\n.,;:!?");
+        while (word != NULL) {
+            if (strcmp(word, keyword) == 0) {
+                count++;
+            }
+            word = strtok(NULL, " \t\n.,;:!?");
+        }
+    }
+    
+    return count;
+}
+
+int main() {
+    char filename[100], keyword[50];
+    
+    printf("Enter the filename: ");
+    scanf("%s", filename);
+    
+    printf("Enter the keyword: ");
+    scanf("%s", keyword);
+    
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Unable to open file.\n");
+        return 1;
+    }
+    
+    for (int i = 0; keyword[i]; i++) {
+        keyword[i] = tolower(keyword[i]);
+    }
+    
+    int frequency = count_keyword(file, keyword);
+    
+    printf("The frequency of '%s' in the file is: %d\n", keyword, frequency);
+    
+    fclose(file);
+    return 0;
+}
