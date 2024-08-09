@@ -1,0 +1,85 @@
+// program that takes n distinct integers as input and stores them in an array such that every i th (0 ≤ i ≤ (n−1)) element in the array is bigger than 2×(i+1)th and (2×(i+1)+1)th elements. Print the array
+
+CODE ->
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        swap(&arr[i], &arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void build_max_heap(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+}
+
+void rearrange_array(int arr[], int n) {
+    build_max_heap(arr, n);
+
+    int temp[n];
+    int heap_size = n;
+    int j = 0;
+
+    // Place elements at even indices
+    for (int i = 0; i < n; i += 2) {
+        temp[i] = arr[0];  // Root of max-heap
+        arr[0] = arr[heap_size - 1];
+        heap_size--;
+        heapify(arr, heap_size, 0);
+    }
+
+    // Place remaining elements at odd indices
+    for (int i = 1; i < n; i += 2) {
+        temp[i] = arr[0];  // Root of max-heap
+        arr[0] = arr[heap_size - 1];
+        heap_size--;
+        if (heap_size > 0)
+            heapify(arr, heap_size, 0);
+    }
+
+    // Copy back to original array
+    for (int i = 0; i < n; i++)
+        arr[i] = temp[i];
+}
+
+int main() {
+    int n;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    
+    int *arr = (int*)malloc(n * sizeof(int));
+    printf("Enter %d distinct integers:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    rearrange_array(arr, n);
+    
+    printf("Rearranged array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    
+    free(arr);
+    return 0;
+}
